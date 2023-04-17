@@ -1,8 +1,13 @@
 import React from 'react';
 import './App.css';
+import Prompt from './components/Prompt'
 
 function App() {
-  return (<></>);
+  return (
+    <>
+      <Prompt/>
+    </>
+  );
 }
 
 export default App;
