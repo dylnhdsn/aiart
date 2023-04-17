@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
-import {Tag, TAGS}from './tags';
+import { Tag, TAGS } from './tags';
 
 const PromptInput: React.FC = () => {
   const [prompt, setPrompt] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
+  const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPrompt(event.target.value);
@@ -16,9 +17,7 @@ const PromptInput: React.FC = () => {
     _: React.SyntheticEvent<Element, Event>,
     value: (string | Tag)[],
   ) => {
-    const newTags = value
-      .filter((v) => typeof v !== 'string')
-      .map((v) => v as Tag);
+    const newTags = value.filter((v) => typeof v !== 'string').map((v) => v as Tag);
     setSelectedTags(newTags);
     setPrompt('');
   };
@@ -51,33 +50,50 @@ const PromptInput: React.FC = () => {
     return [...tagChips, promptChip];
   };
 
+  const handleToggleAdvanced = () => {
+    setShowAdvanced(!showAdvanced);
+  };
+
   return (
     <>
-
-    <Autocomplete
-      freeSolo
-      multiple
-      options={TAGS}
-      getOptionLabel={(option: Tag | string) => {
-        if (typeof option === 'string') {
-          return option;
-        }
-        return option.label;
-      }}
-      onChange={handleAutocompleteChange}
-      value={selectedTags}
-      renderTags={renderTags}
-      renderInput={(params) => (
+      <Autocomplete
+        freeSolo
+        multiple
+        options={TAGS}
+        getOptionLabel={(option: Tag | string) => {
+          if (typeof option === 'string') {
+            return option;
+          }
+          return option.label;
+        }}
+        onChange={handleAutocompleteChange}
+        value={selectedTags}
+        renderTags={renderTags}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Add a tag"
+            variant="outlined"
+            onChange={handleInputChange}
+            value={prompt}
+          />
+        )}
+      />
+      <br />
+      <br />
+      <button onClick={handleToggleAdvanced}>{showAdvanced ? "Hide" : "Show"} advanced</button>
+      {showAdvanced && (
         <TextField
-          {...params}
-          label="Add a tag"
+          label="Advanced"
           variant="outlined"
-          onChange={handleInputChange}
-          value={prompt}
+          fullWidth
+          multiline
+          rows={4}
+          value={selectedTags.map(tag => tag.words.join(", ")).join("; ")}
+          onChange={() => {}}
         />
       )}
-    />
-</>
+    </>
   );
 };
 
