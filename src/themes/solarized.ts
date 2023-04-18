@@ -1,98 +1,117 @@
 import { createTheme } from '@mui/material/styles';
+import { blue, orange, grey } from '@mui/material/colors';
 
-const solarizedLightTheme = createTheme({
+export const solarizedLightTheme = createTheme({
   palette: {
-    primary: {
-      main: '#268bd2', // blue
-    },
-    secondary: {
-      main: '#859900', // green
+    mode: 'light',
+    primary: blue,
+    secondary: orange,
+    background: {
+      default: '#fdf6e3',
+      paper: '#eee8d5',
     },
     text: {
-      primary: '#657b83', // base03
-      secondary: '#93a1a1', // base1
-    },
-    background: {
-      default: '#fdf6e3', // base3
-      paper: '#eee8d5', // base2
+      primary: '#657b83',
+      secondary: '#2aa198',
     },
   },
   components: {
-    MuiChip: {
+    MuiButton: {
       styleOverrides: {
         root: {
-          backgroundColor: '#93a1a1', // base1
+          borderRadius: 0,
+          textTransform: 'none',
         },
-        deletable: {
-          '&:focus': {
-            backgroundColor: '#dc322f', // red
+      },
+      variants: [
+        {
+          props: { variant: 'contained' },
+          style: {
+            color: 'white',
+            backgroundColor: blue[500],
+            '&:hover': {
+              backgroundColor: blue[700],
+            },
           },
         },
-      },
-    },
-    MuiAutocomplete: {
-      styleOverrides: {
-        paper: {
-          backgroundColor: '#eee8d5', // base2
+        {
+          props: { variant: 'outlined' },
+          style: {
+            color: blue[500],
+            borderColor: blue[500],
+            '&:hover': {
+              backgroundColor: blue[50],
+            },
+          },
         },
-      },
-    },
-    MuiTextField: {
-      styleOverrides: {
-        root: {
-          backgroundColor: '#eee8d5', // base2
+        {
+          props: { variant: 'text' },
+          style: {
+            color: blue[500],
+            '&:hover': {
+              backgroundColor: blue[50],
+            },
+          },
         },
-      },
+      ],
     },
   },
 });
 
-const solarizedDarkTheme = createTheme({
+export const solarizedDarkTheme = createTheme({
   palette: {
-    primary: {
-      main: '#268bd2', // blue
-    },
-    secondary: {
-      main: '#859900', // green
+    mode: 'dark',
+    primary: blue,
+    secondary: orange,
+    background: {
+      default: '#002b36',
+      paper: '#073642',
     },
     text: {
-      primary: '#839496', // base1
-      secondary: '#657b83', // base01
-    },
-    background: {
-      default: '#002b36', // base03
-      paper: '#073642', // base02
+      primary: '#839496',
+      secondary: '#6c71c4',
     },
   },
   components: {
-    MuiChip: {
+    MuiButton: {
       styleOverrides: {
         root: {
-          backgroundColor: '#586e75', // base01
+          borderRadius: 0,
+          textTransform: 'none',
         },
-        deletable: {
-          '&:focus': {
-            backgroundColor: '#dc322f', // red
+      },
+      variants: [
+        {
+          props: { variant: 'contained' },
+          style: {
+            color: 'white',
+            backgroundColor: blue[500],
+            '&:hover': {
+              backgroundColor: blue[700],
+            },
           },
         },
-      },
-    },
-    MuiAutocomplete: {
-      styleOverrides: {
-        paper: {
-          backgroundColor: '#073642', // base02
+        {
+          props: { variant: 'outlined' },
+          style: {
+            color: blue[500],
+            borderColor: blue[500],
+            '&:hover': {
+              backgroundColor: grey[900],
+            },
+          },
         },
-      },
-    },
-    MuiTextField: {
-      styleOverrides: {
-        root: {
-          backgroundColor: '#073642', // base02
+        {
+          props: { variant: 'text' },
+          style: {
+            color: blue[500],
+            '&:hover': {
+              backgroundColor: grey[900],
+            },
+          },
         },
-      },
+      ],
     },
   },
 });
-
-export { solarizedLightTheme, solarizedDarkTheme };
 

@@ -2,9 +2,32 @@ import React, { useState } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
+import Button from '@mui/material/Button';
 import { Tag, TAGS } from './tags';
+import { css } from '@emotion/react';
 
-const PromptInput: React.FC = () => {
+const PromptChip = ({ prompt, getTagProps, index }: any) => (
+  prompt && prompt.trim() !== '' ? (
+    <Chip
+      key={prompt}
+      label={prompt}
+      {...getTagProps({ index })}
+      style={{ marginRight: '0.5rem' }}
+    />
+  ) : null
+);
+
+const TagChip = ({ tag, handleDeleteTag, getTagProps, index }: any) => (
+  <Chip
+    key={tag.label}
+    label={tag.label}
+    onDelete={() => handleDeleteTag(tag)}
+    {...getTagProps({ index })}
+    style={{ marginRight: '0.5rem' }}
+  />
+);
+
+const Prompt: React.FC = () => {
   const [prompt, setPrompt] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
@@ -30,24 +53,23 @@ const PromptInput: React.FC = () => {
     const tagChips = value
       .filter((v) => typeof v !== 'string')
       .map((tag, index) => (
-        <Chip
-          key={(tag as Tag).label}
-          label={(tag as Tag).label}
-          onDelete={() => handleDeleteTag(tag as Tag)}
-          {...getTagProps({ index })}
-          style={{ marginRight: '0.5rem' }}
+        <TagChip
+          tag={tag as Tag}
+          handleDeleteTag={handleDeleteTag}
+          getTagProps={getTagProps}
+          index={index}
         />
       ));
-    const promptChip =
-      prompt && prompt.trim() !== '' ? (
-        <Chip
-          key={prompt}
-          label={prompt}
-          {...getTagProps({ index: tagChips.length })}
-          style={{ marginRight: '0.5rem' }}
+    return (
+      <>
+        {tagChips}
+        <PromptChip
+          prompt={prompt}
+          getTagProps={getTagProps}
+          index={tagChips.length}
         />
-      ) : null;
-    return [...tagChips, promptChip];
+      </>
+    );
   };
 
   const handleToggleAdvanced = () => {
@@ -72,24 +94,28 @@ const PromptInput: React.FC = () => {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Add a tag"
-            variant="outlined"
+            label="add tags"
+            variant="filled"
             onChange={handleInputChange}
             value={prompt}
+            margin="normal"
           />
         )}
       />
-      <br />
-      <br />
-      <button onClick={handleToggleAdvanced}>{showAdvanced ? "Hide" : "Show"} advanced</button>
+      <Button
+        variant="contained"
+        onClick={handleToggleAdvanced}
+      >
+        {showAdvanced ? "Hide" : "Show"} advanced
+      </Button>
       {showAdvanced && (
         <TextField
-          label="Advanced"
+          placeholder="Advanced"
           variant="outlined"
           fullWidth
           multiline
           rows={4}
-          value={selectedTags.map(tag => tag.words.join(", ")).join("; ")}
+          value={selectedTags.map(tag => tag.words.join(", ")).join(":: ")}
           onChange={() => {}}
         />
       )}
@@ -97,5 +123,5 @@ const PromptInput: React.FC = () => {
   );
 };
 
-export default PromptInput;
 
+export default Prompt
